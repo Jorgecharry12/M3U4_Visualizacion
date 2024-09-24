@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pie Chart: Games Sales</title>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        // Load JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Count games with sales > 500,000 and < 500,000
+                var salesGreaterThan500k = 0;
+                var salesLessThan500k = 0;
+                for (var i = 0; i < data.length; i++) {
+                    var US_sales = parseFloat(data[i].US_Sales);
+                    if (US_sales > 500000) {
+                        salesGreaterThan500k++;
+                    } else {
+                        salesLessThan500k++;
+                    }
+                }
+
+                // Prepare data for pie chart
+                var pieData = new google.visualization.DataTable();
+                pieData.addColumn('string', 'Sales');
+                pieData.addColumn('number', 'Count');
+                pieData.addRow(['> $500,000', salesGreaterThan500k]);
+                pieData.addRow(['< $500,000', salesLessThan500k]);
+
+                // Set chart options
+                var options = {
+                    title: 'Games Sales (> $500,000 vs. < $500,000)',
+                    pieHole: 0.4,
+                    colors: ['#2ecc71', '#f39c12'] // Verde y naranja
+                };
+
+                // Draw the pie chart
+                var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                chart.draw(pieData, options);
+            });
+    }
+</script>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px; /* Espacio alrededor del contenido */
+        background-color: #f4f4f4;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    h1 { /* Si tienes un título en esta página */
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #chart_div {
+        background-color: #fff; /* Fondo blanco para el gráfico */
+        border-radius: 8px; /* Bordes redondeados para el gráfico */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para el gráfico */
+        margin-bottom: 20px;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 15px; /* Ajustado para un botón más compacto */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px; /* Ajustado para un botón más compacto */
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+</style>
+</head>
+<body>
+    <div id="chart_div" style="width: 800px; height: 500px;"></div>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

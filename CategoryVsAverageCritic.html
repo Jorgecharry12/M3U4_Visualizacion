@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scatter Plot: Category vs. Average Installments</title>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        // Load JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Aggregate sum and count of Critic_rating by category
+                var Critic_ratingStatsByCategory = {};
+                for (var i = 0; i < data.length; i++) {
+                    var category = data[i].category;
+                    var Critic_rating = parseCritic_rating(data[i].Critic_Rating);
+                    if (!Critic_ratingStatsByCategory[category]) {
+                        Critic_ratingStatsByCategory[category] = { total: 0, count: 0 };
+                    }
+                    Critic_ratingStatsByCategory[category].total += Critic_rating;
+                    Critic_ratingStatsByCategory[category].count++;
+                }
+
+                // Prepare data for scatter plot
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Category');
+                data.addColumn('number', 'Average Critic_rating');
+                for (var category in Critic_ratingStatsByCategory) {
+                    var average = Critic_ratingStatsByCategory[category].total / Critic_ratingStatsByCategory[category].count;
+                    data.addRow([category, average]);
+                }
+
+                // Set chart options
+                var options = {
+                    title: 'Category vs. Average Critic_rating',
+                    hAxis: { title: 'Category' },
+                    vAxis: { title: 'Average Critic_rating' },
+                    legend: 'none',
+                    chartArea: { width: '50%', height: '70%' }
+                };
+
+                // Draw the scatter plot chart
+                var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            });
+    }
+
+    // Function to parse the Critic_rating string to a number
+    function parseCritic_rating(Critic_rating) {
+        var parsed = Critic_rating.split(' ')[0]; // Extract numeric part
+        return parseFloat(parsed);
+    }
+</script>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px; /* Espacio alrededor del contenido */
+        background-color: #f4f4f4;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    h1 { /* Si tienes un título en esta página */
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #chart_div {
+        background-color: #fff; /* Fondo blanco para el gráfico */
+        border-radius: 8px; /* Bordes redondeados para el gráfico */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para el gráfico */
+        margin-bottom: 20px;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 15px; /* Ajustado para un botón más compacto */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px; /* Ajustado para un botón más compacto */
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+</style>
+</head>
+<body>
+    <div id="chart_div" style="width: 800px; height: 500px;"></div>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

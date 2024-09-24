@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line Chart: Top Installed Games</title>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        // Load JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Find the top 10 games based on critic rating
+        var topGames = [];
+        for (var i = 0; i < 10; i++) {
+            var maxRatingGame = data[0];
+            for (var j = 1; j < data.length; j++) {
+                if (data[j].Critic_Rating > maxRatingGame.Critic_Rating && !topGames.includes(data[j])) {
+                    maxRatingGame = data[j];
+                }
+            }
+            topGames.push(maxRatingGame);
+        }
+
+        // Create a DataTable with the top two games
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('string', 'Game');
+        dataTable.addColumn('number', 'Critic Rating');
+        topGames.forEach(function(game) {
+            dataTable.addRow([game.title, parseInt(game.Critic_Rating)]);
+        });
+
+        // Set chart options
+        var options = {
+            title: 'Top 10 Games by Critic Rating',
+            hAxis: {
+                title: 'Game'
+            },
+            vAxis: {
+                title: 'Critic Rating'
+            },
+            legend: 'none'
+        };
+
+        // Draw the chart
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(dataTable, options);
+            })
+            .catch(error => console.error('Error loading JSON file:', error));
+    }
+</script>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px; /* Espacio alrededor del contenido */
+        background-color: #f4f4f4;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    h1 { /* Si tienes un título en esta página */
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #chart_div {
+        background-color: #fff; /* Fondo blanco para el gráfico */
+        border-radius: 8px; /* Bordes redondeados para el gráfico */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil para el gráfico */
+        margin-bottom: 20px;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 15px; /* Ajustado para un botón más compacto */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px; /* Ajustado para un botón más compacto */
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+</style>
+</head>
+<body>
+    <div id="chart_div" style="width: 800px; height: 500px;"></div>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

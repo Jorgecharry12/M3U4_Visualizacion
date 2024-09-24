@@ -1,0 +1,84 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; 
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2c3e50; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #3498db; 
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px; 
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background-color 0.3s; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        }
+
+        button:hover {
+            background-color: #2980b9; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualización de datos por Jorge Charry - Santiago Ibarra - Sergio Peña.</h1>
+    <p>Press the button to open a visual.</p>
+    <button onclick="openNewPage()">Open Total installed games</button>
+    <button onclick="openNewPage1()">Top 10 games based on Critic Rating</button>
+    <button onclick="openNewPage2()">Category vs. Total Installs</button>
+    <button onclick="openNewPage3()">Category vs. Average User Rating</button>
+    <button onclick="openNewPage4()">Category vs. Average Critic Rating</button>
+    <button onclick="openNewPage5()">Games Sales</button>
+
+    <script>
+            function openNewPage() {
+            window.open('TopInstalledGames.html', '_blank');
+        }
+        function openNewPage1() {
+            window.open('Top10GamesBasedOnCritics.html', '_blank');
+        }
+        function openNewPage2() {
+            window.open('CaterogyVsTotalInstalls.html', '_blank');
+        }
+        function openNewPage3() {
+            window.open('CategoryvsAverageUser.html', '_blank');
+        }
+        function openNewPage4() {
+            window.open('CategoryVsAverageCritic.html', '_blank');
+        }
+        function openNewPage5() {
+            window.open('GamesSales.html', '_blank');
+        }
+        
+    </script>
+</body>
+</html>
